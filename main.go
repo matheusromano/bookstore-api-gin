@@ -21,6 +21,7 @@ func main() {
 
 	//routes
 	routes.BookRoute(router)
+	routes.SigninRoute(router)
 
 	router.Run("localhost:6000")
 }
