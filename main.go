@@ -1,27 +1,25 @@
 package main
 
 import (
-	"gin-mongo-api/configs"
+	"gin-mongo-api/database"
 	"gin-mongo-api/routes"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 func main() {
 	router := gin.Default()
 
 	// run database
-	configs.ConnectDB()
-
-	/*router.GET("/", func(c *gin.Context) {
-	        c.JSON(200, gin.H{
-	                "data": "Gin-gonic & mongoDB already running!",
-	        })
-	})*/
+	database.ConnectDB()
 
 	//routes
 	routes.BookRoute(router)
-	routes.SigninRoute(router)
+	//routes.SigninRoute(router)
+	routes.AuthRoute(router)
 
-	router.Run("localhost:6000")
+	port := viper.GetString("PORT")
+
+	router.Run(port)
 }

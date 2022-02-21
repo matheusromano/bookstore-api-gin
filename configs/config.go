@@ -5,7 +5,9 @@ import (
 )
 
 type Config struct {
-	MongoURI string `mapstructure:"MONGOURI"`
+	MongoURI   string `mapstructure:"MONGOURI"`
+	Port       string `mapstructure:"PORT"`
+	Secret_key string `mapstructure:"SECRET_KEY"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

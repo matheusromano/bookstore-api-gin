@@ -1,6 +1,6 @@
 package routes
 
-import (
+/*import (
 	"gin-mongo-api/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -8,4 +8,4 @@ import (
 
 func SigninRoute(router *gin.Engine) {
 	router.POST("/signin", controllers.Signin())
-}
+}*/

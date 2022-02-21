@@ -1,4 +1,4 @@
-package configs
+package database
 
 import (
 	"context"
@@ -6,12 +6,14 @@ import (
 	"log"
 	"time"
 
+	cfg "gin-mongo-api/configs"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func ConnectDB() *mongo.Client {
-	config, err := LoadConfig(".")
+	config, err := cfg.LoadConfig(".")
 	if err != nil {
 		log.Fatal("Cannot load config:", err)
 	}

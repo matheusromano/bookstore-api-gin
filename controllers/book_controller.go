@@ -2,22 +2,24 @@ package controllers
 
 import (
 	"context"
-	"encoding/json"
-	"gin-mongo-api/configs"
+	//"encoding/json"
+	"gin-mongo-api/database"
 	"gin-mongo-api/models"
 	"gin-mongo-api/responses"
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	//"github.com/dgrijalva/jwt-go"
+
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
+
+	//"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// init authentication with jwt
+/* init authentication with jwt
 var (
 	users = map[string]string{
 		"user1": "password1",
@@ -47,22 +49,25 @@ type AuthResult struct {
 	Token   string `json:"token"`
 }
 
-// end of jwt authentication
+ end of jwt authentication */
 
-var bookCollection *mongo.Collection = configs.GetCollection(configs.DB, "books")
-var validate = validator.New()
+var bookCollection *mongo.Collection = database.GetCollection(database.DB, "books")
+
+//var validate = validator.New()
 
 func CreateBook() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// init jwt token auth
-		tknStr := c.Request.Header["Private-Token"][0]
+		//mdw.Authenticate()
+
+		/* init jwt token auth
+		tknStr := c.Request.Header["token"][0]
 		if tknStr == "" {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
 			return
 		}
-		claims := &Claims{}
+		claims := helpers.SignedDetails{}
 		tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
-			return JwtKey, nil
+			return helpers.ValidateToken(tknStr). nil
 		})
 		if err != nil {
 			if err == jwt.ErrSignatureInvalid {
@@ -75,7 +80,7 @@ func CreateBook() gin.HandlerFunc {
 		if !tkn.Valid {
 			c.Writer.WriteHeader(http.StatusForbidden)
 		}
-		// end jwt token auth
+		// end jwt token auth */
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var book models.Book
@@ -127,8 +132,8 @@ func CreateBook() gin.HandlerFunc {
 }
 func GetABook() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// init jwt token auth
-		tknStr := c.Request.Header["Private-Token"][0]
+		/* init jwt token auth
+		tknStr := c.Request.Header["token"][0]
 		if tknStr == "" {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
 			return
@@ -148,7 +153,7 @@ func GetABook() gin.HandlerFunc {
 		if !tkn.Valid {
 			c.Writer.WriteHeader(http.StatusForbidden)
 		}
-		// end jwt token auth
+		// end jwt token auth*/
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		bookId := c.Param("bookId")
@@ -157,7 +162,7 @@ func GetABook() gin.HandlerFunc {
 
 		objId, _ := primitive.ObjectIDFromHex(bookId)
 
-		err = bookCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&book)
+		err := bookCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&book)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.BookResponse{
 				Status:  http.StatusInternalServerError,
@@ -177,7 +182,7 @@ func GetABook() gin.HandlerFunc {
 
 func EditABook() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// init jwt token auth
+		/* init jwt token auth
 		tknStr := c.Request.Header["Private-Token"][0]
 		if tknStr == "" {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
@@ -197,7 +202,7 @@ func EditABook() gin.HandlerFunc {
 		}
 		if !tkn.Valid {
 			c.Writer.WriteHeader(http.StatusForbidden)
-		}
+		}*/
 		// end jwt token auth
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -261,7 +266,7 @@ func EditABook() gin.HandlerFunc {
 
 func DeleteABook() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// init jwt token auth
+		/* init jwt token auth
 		tknStr := c.Request.Header["Private-Token"][0]
 		if tknStr == "" {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
@@ -282,7 +287,7 @@ func DeleteABook() gin.HandlerFunc {
 		if !tkn.Valid {
 			c.Writer.WriteHeader(http.StatusForbidden)
 		}
-		// end jwt token auth
+		// end jwt token auth */
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		bookId := c.Param("bookId")
@@ -320,7 +325,7 @@ func DeleteABook() gin.HandlerFunc {
 
 func GetAllBooks() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// init jwt token auth
+		/* init jwt token auth
 		tknStr := c.Request.Header["Private-Token"][0]
 		if tknStr == "" {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
@@ -340,7 +345,7 @@ func GetAllBooks() gin.HandlerFunc {
 		}
 		if !tkn.Valid {
 			c.Writer.WriteHeader(http.StatusForbidden)
-		}
+		}*/
 		// end jwt token auth
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -382,7 +387,7 @@ func GetAllBooks() gin.HandlerFunc {
 	}
 }
 
-func Signin() gin.HandlerFunc {
+/*func Signin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var creds Credentials
 		err := json.NewDecoder(c.Request.Body).Decode(&creds)
@@ -437,3 +442,4 @@ func Signin() gin.HandlerFunc {
 	}
 
 }
+*/
