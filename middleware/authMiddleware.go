@@ -10,6 +10,16 @@ import (
 
 func Authenticate() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if c.Request.URL.Path == "/users/signup" {
+			c.Next()
+			return
+		}
+
+		if c.Request.URL.Path == "/users/login" {
+			c.Next()
+			return
+		}
+
 		clientToken := c.Request.Header.Get("token")
 		if clientToken == "" {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("No Authorization header provided")})
