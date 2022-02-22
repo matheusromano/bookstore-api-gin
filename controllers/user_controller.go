@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	//"crypto/rand"
 	"fmt"
 	"log"
 	"net/http"
@@ -22,22 +21,6 @@ import (
 
 var userCollection *mongo.Collection = database.GetCollection(database.DB, "user")
 var validate = validator.New()
-
-//var salt = generateRandomSalt(saltSize)
-
-//const saltSize = 16
-
-/*func generateRandomSalt(saltSize int) []byte {
-	var salt = make([]byte, saltSize)
-
-	_, err := rand.Read(salt[:])
-
-	if err != nil {
-		panic(err)
-	}
-
-	return salt
-}*/
 
 //HashPassword is used to encrypt the password
 func HashPassword(password string) string {
