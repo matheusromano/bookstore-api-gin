@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	//"crypto/rand"
 	"fmt"
 	"log"
 	"net/http"
@@ -22,14 +23,35 @@ import (
 var userCollection *mongo.Collection = database.GetCollection(database.DB, "user")
 var validate = validator.New()
 
-//HashPassword is used to encrypt the password
-func HashPassword(password string) string {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+//var salt = generateRandomSalt(saltSize)
+
+//const saltSize = 16
+
+/*func generateRandomSalt(saltSize int) []byte {
+	var salt = make([]byte, saltSize)
+
+	_, err := rand.Read(salt[:])
+
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 
-	return string(bytes)
+	return salt
+}*/
+
+//HashPassword is used to encrypt the password
+func HashPassword(password string) string {
+
+	// Convert password string to byte slice
+	var passwordBytes = []byte(password)
+
+	// Hash password with Bcrypt's min cost
+	hashedPasswordBytes, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Printf("Has an error here:", err)
+	}
+
+	return string(hashedPasswordBytes)
 }
 
 //VerifyPassword checks
@@ -39,7 +61,7 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 	msg := ""
 
 	if err != nil {
-		msg = fmt.Sprintf("login or passowrd is incorrect")
+		msg = fmt.Sprintf("login or password is incorrect")
 		check = false
 	}
 
