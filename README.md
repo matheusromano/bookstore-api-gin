@@ -1,4 +1,4 @@
-# bookstore-api
+# bookstore-api-gin
 
 ### A simple api of a bookstore, using: 
 - [Golang](https://github.com/golang)
